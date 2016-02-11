@@ -98,7 +98,7 @@ task hello {
         println 'Hello world!'
     }
 }
-jacocoTestReport2 {
+task jacocoTestReport2 {
    group = "Reporting"
    description = "Generate Jacoco coverage reports after running tests."
    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
