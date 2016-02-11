@@ -18,6 +18,17 @@ apply plugin: 'jacoco'
 android {
     compileSdkVersion 23
     buildToolsVersion '21.1.2'
+    jacoco {
+        toolVersion = "0.7.1.201405082137"
+        reportsDir = file("$buildDir/customJacocoReportDir")
+    }
+    test {
+        jacoco {
+            append = false
+            destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+            classDumpFile = file("$buildDir/jacoco/classpathdumps")
+        }
+    }
     defaultConfig {
         applicationId "com.techandsolve.jimmymuchachasoy.test"
         minSdkVersion 15
@@ -90,16 +101,7 @@ android.testOptions.unitTests.all {
 
 
 
-jacoco {
-    toolVersion = "0.7.1.201405082137"
-    reportsDir = file("$buildDir/customJacocoReportDir")
-}
 
-androidTest {
-    jacoco {
-        append = false
-        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
-        classDumpFile = file("$buildDir/jacoco/classpathdumps")
-    }
-}
+
+
 
