@@ -75,3 +75,8 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
     }
  
 }
+task hello {
+    doLast {
+        println 'Hello world!'
+    }
+}
