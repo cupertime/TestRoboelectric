@@ -107,8 +107,8 @@ task jacocoTestReport(type: JacocoReport /*, dependsOn: ['test'] */ ) {
                       '**/*Test*.*',
                       'android/**/*.*']
 
-    def debugTree = fileTree(dir: "${project.buildDir}/intermediates/classes/debug", excludes: fileFilter)
-    def mainSrc = "${project.projectDir}/src/main/java"
+    def debugTree = fileTree(dir: "app/intermediates/classes/debug", excludes: fileFilter)
+    def mainSrc = "app/src/main/java"
 
     sourceDirectories = files([mainSrc])
     classDirectories = files([debugTree])
@@ -117,12 +117,12 @@ task jacocoTestReport(type: JacocoReport /*, dependsOn: ['test'] */ ) {
     reports {
         xml {
             enabled = true
-            destination = "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+            destination = "app/reports/jacoco/test/jacocoTestReport.xml"
         }
         csv.enabled false
         html {
             enabled = true
-            destination = "${project.buildDir}/reports/jacoco"
+            destination = "app/reports/jacoco"
         }
     }
 }
