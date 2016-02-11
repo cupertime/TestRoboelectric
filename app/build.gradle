@@ -10,6 +10,9 @@ buildscript {
 }
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
+jacoco {
+    toolVersion = "0.7.1.201405082137"
+}
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
