@@ -95,7 +95,7 @@ jacoco {
     reportsDir = file("$buildDir/customJacocoReportDir")
 }
 
-test {
+androidTest {
     jacoco {
         append = false
         destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
