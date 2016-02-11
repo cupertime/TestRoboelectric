@@ -1,46 +1,84 @@
 buildscript {
-  repositories {
-    mavenLocal()
-    mavenCentral()
-  }
-  dependencies {
-    classpath 'com.android.tools.build:gradle:0.12.+'
-    classpath 'org.robolectric:robolectric-gradle-plugin:0.11.+'
-  }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.5.0'
+    }
 }
-apply plugin: 'com.android.application'
-apply plugin: 'jacoco'
-jacoco {
-    toolVersion = "0.7.1.201405082137"
-}
-android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
 
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '21.1.2'
     defaultConfig {
         applicationId "com.techandsolve.jimmymuchachasoy.test"
-        minSdkVersion 9
-        targetSdkVersion 22
+        minSdkVersion 15
+        targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName '1.0'
     }
     buildTypes {
         debug {
-            debuggable true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            testCoverageEnabled true
+            //runProguard true
+            proguardFiles 'proguard-rules.txt'
+            testCoverageEnabled = true
         }
-        
+        release {
+            //runProguard false
+            proguardFiles 'proguard-rules.txt'
+            testCoverageEnabled = false
+        }
     }
+    sourceSets {
+        androidTest.setRoot('src/test')
+    }
+    lintOptions {
+        abortOnError false
+        disable 'InvalidPackage'
+    }
+    productFlavors {
+    }
+
+    //!! REMARK !!
+    //add this library to work with Robolectric 3.0 when your API level >= 23.
+    //the HttpClient has been removed as of API Level 23, but Robolectric is automatically
+    //shadowing this class. So add it, even though you're not using it.
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    testCompile 'com.squareup.assertj:assertj-android:1.1.0'
+    // ================== LIBRARIES ======================
+    compile fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+
+    //Using the appcompat library is not necessary when the minsdk >= 14
+    //compile 'com.android.support:appcompat-v7:+'
+
+    compile 'com.android.support:support-v4:23.1.1'
+
+    //for more information on the Butterknife injection framework
+    //visit https://github.com/JakeWharton/butterknife
+    compile 'com.jakewharton:butterknife:6.1.0'
+
+
+    // ================== TESTING LIBRARIES ======================
+    testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:3.0'
 
+    testCompile 'org.bouncycastle:bcprov-jdk15on:1.50'
+    testCompile 'com.jakewharton:butterknife:6.1.0'
+
+    androidTestCompile 'org.robolectric:robolectric:3.0'
+
 }
+
 android.testOptions.unitTests.all {
     // configure the set of classes for JUnit tests
     include '**/*Test.class'
@@ -49,9 +87,17 @@ android.testOptions.unitTests.all {
     // configure max heap size of the test JVM
     maxHeapSize = "2048m"
 }
+
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.7.1.201405082137"
+}
+
 def coverageSourceDirs = [
-        '../app/src/'
+        '../app/src/main/java'
 ]
+
 task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
     group = "Reporting"
 
