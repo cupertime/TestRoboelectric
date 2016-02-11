@@ -88,7 +88,7 @@ dependencies {
 apply plugin: "jacoco"
 
 jacoco {
-    toolVersion = projectJacocoVersion
+    toolVersion = "0.7.1.201405082137"
 }
 
 task jacocoTestReport(type: JacocoReport /*, dependsOn: ['test'] */ ) {
