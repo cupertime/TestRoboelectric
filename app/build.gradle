@@ -141,4 +141,10 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
      
 }
 
-
+task jacocoTestReport2 {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
+    }
+}
