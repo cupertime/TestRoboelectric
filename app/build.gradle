@@ -101,5 +101,17 @@ task hello {
 task jacocoTestReport2 {
    group = "Reporting"
    description = "Generate Jacoco coverage reports after running tests."
-   additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+   reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    // Class R is used, but usage will not be covered, so ignore this class from report
+    classDirectories = fileTree(
+        dir: './build/intermediates/classes/debug',
+        excludes: ['**/R.class',
+                   '**/R$*.class'
+    ])
+    sourceDirectories = files(coverageSourceDirs)
+    executionData = files('build/jacoco/testDebug.exec')
 }
