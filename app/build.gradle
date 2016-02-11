@@ -76,8 +76,5 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
             }
         }
     }
-    afterEvaluate {
-        // just clean up coveralls dashboard, following reports are not of interest
-        testDebug.reports.junitXml.enabled = false
-    }
+ 
 }
