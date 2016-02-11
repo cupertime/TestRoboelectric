@@ -46,17 +46,9 @@ android.testOptions.unitTests.all {
     // configure max heap size of the test JVM
     maxHeapSize = "2048m"
 }
-
-task hello {
-    doLast {
-        println 'Hello world!'
-    }
-}
-task jacocoTestReport2 {
-   group = "Reporting"
-   description = "Generate Jacoco coverage reports after running tests."
-   
-}
+def coverageSourceDirs = [
+        '../app/src/'
+]
 task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
     group = "Reporting"
 
