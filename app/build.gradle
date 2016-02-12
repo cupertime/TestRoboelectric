@@ -17,10 +17,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
 jacoco {
     toolVersion = "0.7.1.201405082137"
-    reportsDir = file("$buildDir/customJacocoReportDir")
+    reportsDir = file("build/customJacocoReportDir")
 }
 android {
-    compileSdkVersion 23
+    compileSdkVersion 21
     buildToolsVersion '21.1.2'
  
    
@@ -32,16 +32,10 @@ android {
         versionName '1.0'
     }
     buildTypes {
-        debug {
-            //runProguard true
+        debug {         
             proguardFiles 'proguard-rules.txt'
-            testCoverageEnabled = true
-        }
-        release {
-            //runProguard false
-            proguardFiles 'proguard-rules.txt'
-            testCoverageEnabled = false
-        }
+            testCoverageEnabled true
+        }        
     }
     sourceSets {
         androidTest.setRoot('src/test')
@@ -53,11 +47,6 @@ android {
     productFlavors {
     }
 
-    //!! REMARK !!
-    //add this library to work with Robolectric 3.0 when your API level >= 23.
-    //the HttpClient has been removed as of API Level 23, but Robolectric is automatically
-    //shadowing this class. So add it, even though you're not using it.
-    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -85,11 +74,6 @@ dependencies {
 
 }
 
-apply plugin: "jacoco"
-
-jacoco {
-    toolVersion = "0.7.1.201405082137"
-}
 
 task jacocoTestReport(type: JacocoReport /*, dependsOn: ['test'] */ ) {
     description = "Generates Jacoco coverage reports: XML and HTML"
@@ -107,7 +91,7 @@ task jacocoTestReport(type: JacocoReport /*, dependsOn: ['test'] */ ) {
                       '**/*Test*.*',
                       'android/**/*.*']
 
-    def debugTree = fileTree(dir: "app/intermediates/classes/debug", excludes: fileFilter)
+    def debugTree = fileTree(dir: "build/intermediates/classes/debug", excludes: fileFilter)
     def mainSrc = "app/src/main/java"
 
     sourceDirectories = files([mainSrc])
@@ -117,12 +101,12 @@ task jacocoTestReport(type: JacocoReport /*, dependsOn: ['test'] */ ) {
     reports {
         xml {
             enabled = true
-            destination = "app/reports/jacoco/test/jacocoTestReport.xml"
+            destination = "reports/jacoco/test/jacocoTestReport.xml"
         }
         csv.enabled false
         html {
             enabled = true
-            destination = "app/reports/jacoco"
+            destination = "reports/jacoco"
         }
     }
 }
