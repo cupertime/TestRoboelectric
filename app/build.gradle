@@ -46,6 +46,11 @@ android {
     }
     productFlavors {
     }
+    
+    compileOptions {
+
+            apply plugin: 'sonar-runner'
+        }
 
 }
 
@@ -74,39 +79,29 @@ dependencies {
 
 }
 
+    sonarRunner {
 
-task jacocoTestReport(type: JacocoReport /*, dependsOn: ['test'] */ ) {
-    description = "Generates Jacoco coverage reports: XML and HTML"
-    group = "Reporting"
-//                outputs.upToDateWhen { false }
+        sonarProperties {
 
-    // use hidden configuration, for details look into JacocoPlugin.groovy
-    jacocoClasspath = project.configurations['androidJacocoAnt']
+            property "sonar.projectKey", "coverage-example"
+            property "sonar.projectName", "Coverage Example"
+            property "sonar.projectVersion", "1.0"
 
-    // exclude auto-generated classes and tests
-    def fileFilter = ['**/R.class',
-                      '**/R$*.class',
-                      '**/BuildConfig.*',
-                      '**/Manifest*.*',
-                      '**/*Test*.*',
-                      'android/**/*.*']
+            property "sonar.sources", "src/main/java"
+            property "sonar.binaries", "build"
+            property "sonar.test", "app/src/test"
 
-    def debugTree = fileTree(dir: "build/intermediates/classes/debug", excludes: fileFilter)
-    def mainSrc = "app/src/main/java"
+            property "sonar.profile", "Android Lint"
+            property "sonar.language", "java"
+            property "sonar.sourceEncoding", "UTF-8"
 
-    sourceDirectories = files([mainSrc])
-    classDirectories = files([debugTree])
-    executionData = fileTree(dir: project.projectDir, includes: ['**/*.exec', '**/*.ec'])
+            property "sonar.dynamicAnalysis", "reuseReports"
 
-    reports {
-        xml {
-            enabled = true
-            destination = "reports/jacoco/test/jacocoTestReport.xml"
-        }
-        csv.enabled false
-        html {
-            enabled = true
-            destination = "reports/jacoco"
+            property "sonar.junit.reportsPath", "build/outputs/reports/coverage/debug"
+            property "sonar.cobertura.reportPath", "build/outputs/reports/coverage/debug/cobertura.xml"
+            property "sonar.java.coveragePlugin", "cobertura"
+
+            property "sonar.host.url", "http://localhost:9000"
         }
     }
-}
+
