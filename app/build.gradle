@@ -73,40 +73,28 @@ dependencies {
     androidTestCompile 'org.robolectric:robolectric:3.0'
 
 }
+sonarRunner {
 
+        sonarProperties {
 
-task jacocoTestReport(type: JacocoReport /*, dependsOn: ['test'] */ ) {
-    description = "Generates Jacoco coverage reports: XML and HTML"
-    group = "Reporting"
-//                outputs.upToDateWhen { false }
+            property "sonar.projectKey", "coverage-example"
+            property "sonar.projectName", "Coverage Example"
+            property "sonar.projectVersion", "1.0"
 
-    // use hidden configuration, for details look into JacocoPlugin.groovy
-    jacocoClasspath = project.configurations['androidJacocoAnt']
+            property "sonar.sources", "src/main/java"
+            property "sonar.binaries", "build"
+            property "sonar.test", "app/src/test/java"
 
-    // exclude auto-generated classes and tests
-    def fileFilter = ['**/R.class',
-                      '**/R$*.class',
-                      '**/BuildConfig.*',
-                      '**/Manifest*.*',
-                      '**/*Test*.*',
-                      'android/**/*.*']
+            property "sonar.profile", "Android Lint"
+            property "sonar.language", "java"
+            property "sonar.sourceEncoding", "UTF-8"
 
-    def debugTree = fileTree(dir: "build/intermediates/classes/debug", excludes: fileFilter)
-    def mainSrc = "app/src/main/java"
+            property "sonar.dynamicAnalysis", "reuseReports"
 
-    sourceDirectories = files([mainSrc])
-    classDirectories = files([debugTree])
-    executionData = fileTree(dir: project.projectDir, includes: ['**/*.exec', '**/*.ec'])
+            property "sonar.junit.reportsPath", "app/build/outputs/reports/coverage/debug"
+            property "sonar.cobertura.reportPath", "app/build/outputs/reports/coverage/debug/cobertura.xml"
+            property "sonar.java.coveragePlugin", "cobertura"
 
-    reports {
-        xml {
-            enabled = true
-            destination = "reports/jacoco/test/jacocoTestReport.xml"
-        }
-        csv.enabled false
-        html {
-            enabled = true
-            destination = "reports/jacoco"
+            property "sonar.host.url", "http://localhost:9099"
         }
     }
-}
